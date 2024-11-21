@@ -46,18 +46,20 @@ def generate_qr_code(data: str, path: Path, fill_color: str = 'red', back_color:
         logging.error(f"Failed to generate/save QR code: {e}")
         raise
 
-def delete_qr_cde(file_path: Path):
+def delete_qr_code(file_name: str, directory: str = "qr_codes") -> bool:
     """
-    Deletes the specified QR code image file.
-    Parameters:
-    - file_path (Path): The filesystem path of the QR code image to delete.
+    Deletes a QR code file from the specified directory.
+    Args:
+        file_name (str): The name of the file to delete.
+        directory (str): The directory containing QR code files. Defaults to 'qr_codes'.
+    Returns:
+        bool: True if the file was successfully deleted, False otherwise.
     """
-    if file_path.is_file():
-        file_path.unlink()  # Delete the file
-        logging.info(f"QR code {file_path.name} deleted successfully")
-    else:
-        logging.error(f"QR code {file_path.name} not found for deletion")
-        raise FileNotFoundError(f"QR code {file_path.name} not found")
+    file_path = os.path.join(directory, file_name)
+    if os.path.exists(file_path):
+        os.remove(file_path)
+        return True
+    return False
 
 def create_directory(directory_path: Path):
     """
